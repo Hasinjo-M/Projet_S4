@@ -7,7 +7,8 @@ class Mysession extends CI_Controller {
 	public function __construct(){
         parent::__construct();
         if ($this->session->has_userdata('utilisateur') == false){
-            redirect(site_url('login/login'));
+            $this->load->view('FrontOffice/acceuil');
+            
         }
         
             

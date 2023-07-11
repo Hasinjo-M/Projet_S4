@@ -15,24 +15,31 @@ class Login extends CI_Controller {
             $motsdepasse  = trim($this->input->post('motsdepasse'));    
         }
 
+        echo $email."   ".$motsdepasse;
         $resulat = $this->M_login->check_login($email, $motsdepasse);
         if($resulat == null){
             $error['error'] = "Il y a une erreur ou ce compte n'est pas";
+            echo $error['error']; 
         }
         if($resulat['estadmin'] == "0"){
             $utilisateur = array(
                 'id' => $resulat['id']
             );
             $this->session->set_userdata('utilisateur',$utilisateur);
-            $this->load->view('FrontOffice/accueil');
+            $this->load->view('FrontOffice/acceuil');
         }
 
+        $verifier = false;
         if($resulat['estadmin'] == "1"){
             $utilisateur = array(
                 'id' => $resulat['id']
             );
+            $verifier = true;
             $this->session->set_userdata('admin',$utilisateur);
-            $this->load->view('FrontOffice/accueil');
+            $this->load->view('BackOffice/acceuil');
+        }
+        if($this->input->post('admin') != null && $verifier == false){
+            $this->load->view('BackOffice/login', $error);
         }
     }
 
